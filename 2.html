@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generador de QR y Códigos de Barras</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+        }
+        input[type="text"] {
+            width: 300px;
+            padding: 10px;
+            margin-bottom: 20px;
+            font-size: 16px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            margin-bottom: 20px;
+            margin-right: 10px;
+        }
+        #output {
+            margin-top: 20px;
+        }
+        #qrCanvas, #barcodeCanvas {
+            width: 300px;
+            height: 300px;
+        }
+        canvas {
+            margin-bottom: 20px;
+        }
+        footer {
+            margin-top: 40px;
+            font-size: 14px;
+            color: #555;
+        }
+        footer a {
+            color: #007BFF;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>Generador de QR y Códigos de Barras</h1>
+    <input type="text" id="inputText" placeholder="Introduce el texto...">
+    <br>
+    <button onclick="generateCode()">Generar Código</button>
+    <div id="output">
+        <h2>Código QR:</h2>
+        <canvas id="qrCanvas"></canvas>
+        <br>
+        <button id="downloadQrBtn" style="display:none;" onclick="downloadQR()">Descargar QR</button>
+        
+        <h2>Código de Barras:</h2>
+        <canvas id="barcodeCanvas"></canvas>
+        <br>
+        <button id="downloadBarcodeBtn" style="display:none;" onclick="downloadBarcode()">Descargar Código de Barras</button>
+    </div>
+
+    <footer>
+        © 2024 Elian Mamani. Todos los derechos reservados. 
+        <a href="https://feriasoft.github.io/" target="_blank">Visita nuestra página web</a>.
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jsbarcode/dist/JsBarcode.all.min.js"></script>
+    <script>
+        function generateCode() {
+            const text = document.getElementById('inputText').value;
+
+            // Generar Código QR
+            const qrCanvas = document.getElementById('qrCanvas');
+            qrCanvas.width = 300;
+            qrCanvas.height = 300;
+            QRCode.toCanvas(qrCanvas, text, { width: 300, height: 300 }, function (error) {
+                if (error) console.error(error);
+                console.log('Código QR generado');
+            });
+
+            // Generar Código de Barras
+            const barcodeCanvas = document.getElementById('barcodeCanvas');
+            barcodeCanvas.width = 400;
+            barcodeCanvas.height = 150;
+            JsBarcode(barcodeCanvas, text, {
+                format: "CODE128",
+                width: 3,  // Ancho de cada barra
+                height: 100, // Altura del código de barras
+                displayValue: true,
+                fontSize: 20
+            });
+
+            // Mostrar botones de descarga
+            document.getElementById('downloadQrBtn').style.display = 'inline-block';
+            document.getElementById('downloadBarcodeBtn').style.display = 'inline-block';
+        }
+
+        function downloadQR() {
+            const qrCanvas = document.getElementById('qrCanvas');
+            const link = document.createElement('a');
+            link.href = qrCanvas.toDataURL('image/png');
+            link.download = 'codigo_qr.png';
+            link.click();
+        }
+
+        function downloadBarcode() {
+            const barcodeCanvas = document.getElementById('barcodeCanvas');
+            const link = document.createElement('a');
+            link.href = barcodeCanvas.toDataURL('image/png');
+            link.download = 'codigo_de_barras.png';
+            link.click();
+        }
+    </script>
+</body>
+</html>
