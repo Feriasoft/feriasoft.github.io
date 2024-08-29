@@ -1,0 +1,223 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Software Punto de Venta</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+        }
+        input[type="text"], input[type="number"], button {
+            padding: 10px;
+            margin: 5px;
+            width: calc(100% - 22px);
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .results, .sales-summary {
+            margin-top: 20px;
+        }
+        .product-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 5px 0;
+        }
+        .edit-button {
+            background-color: #28a745;
+        }
+        .edit-button:hover {
+            background-color: #218838;
+        }
+        .calculate-button {
+            background-color: #ffc107;
+        }
+        .calculate-button:hover {
+            background-color: #e0a800;
+        }
+        .delete-button {
+            background-color: #dc3545;
+        }
+        .delete-button:hover {
+            background-color: #c82333;
+        }
+        .result-item {
+            margin-top: 10px;
+        }
+        .section {
+            display: block; /* Mostrar la sección de ventas y productos por defecto */
+        }
+        .footer {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 0.8em;
+        }
+        .footer a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        .footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Software Punto de Venta</h1>
+
+        <!-- Sección para gestionar ventas y productos -->
+        <div id="salesSection" class="section">
+            <div class="sales-summary">
+                
+                <input type="text" id="sellBarcodeInput" placeholder="Código de barras" oninput="autocompleteProduct()" />
+                <input type="number" id="sellQuantityInput" placeholder="Cantidad" step="1" />
+                <input type="number" id="sellPriceInput" placeholder="Precio" step="0.01" oninput="addProduct()" />
+                <button class="calculate-button" onclick="addSale()">Agregar Venta</button>
+                <div class="result-item" id="salesList"></div>
+                <input type="number" id="paymentInput" placeholder="Monto recibido" step="0.01" />
+                <button class="calculate-button" onclick="calculateChange()">Calcular Cambio</button>
+                <div class="result-item" id="totalAmount"></div>
+                <div class="result-item" id="changeAmount"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>© 2024 Elian Mamani. Todos los derechos reservados. <a href="https://feriasoft.github.io/" target="_blank">Visita nuestra página web</a></p>
+    </div>
+
+    <script>
+        let editProductBarcode = null;
+        let sales = [];
+
+        function addProduct() {
+            const barcodeInput = document.getElementById('sellBarcodeInput');
+            const priceInput = document.getElementById('sellPriceInput');
+            const barcode = barcodeInput.value.trim();
+            const price = parseFloat(priceInput.value);
+
+            if (barcode && !isNaN(price)) {
+                let products = JSON.parse(localStorage.getItem('products')) || [];
+                const existingProductIndex = products.findIndex(product => product.barcode === barcode);
+
+                if (existingProductIndex !== -1) {
+                    products[existingProductIndex].price = price;
+                } else {
+                    products.push({ barcode, price });
+                }
+
+                localStorage.setItem('products', JSON.stringify(products));
+            }
+        }
+
+        function autocompleteProduct() {
+            const sellBarcodeInput = document.getElementById('sellBarcodeInput').value.trim();
+            let products = JSON.parse(localStorage.getItem('products')) || [];
+
+            if (sellBarcodeInput) {
+                const product = products.find(product => product.barcode === sellBarcodeInput);
+                if (product) {
+                    document.getElementById('sellPriceInput').value = product.price;
+                } else {
+                    document.getElementById('sellPriceInput').value = '';
+                }
+            }
+        }
+
+        function addSale() {
+            const sellBarcodeInput = document.getElementById('sellBarcodeInput');
+            const sellQuantityInput = document.getElementById('sellQuantityInput');
+            const sellPriceInput = document.getElementById('sellPriceInput');
+            const barcode = sellBarcodeInput.value.trim();
+            const quantity = parseInt(sellQuantityInput.value, 10);
+            const price = parseFloat(sellPriceInput.value);
+
+            if (barcode && !isNaN(quantity) && quantity > 0 && !isNaN(price)) {
+                let products = JSON.parse(localStorage.getItem('products')) || [];
+                const product = products.find(product => product.barcode === barcode);
+
+                if (product) {
+                    const existingSaleIndex = sales.findIndex(sale => sale.barcode === barcode);
+
+                    if (existingSaleIndex !== -1) {
+                        sales[existingSaleIndex].quantity = quantity;
+                        sales[existingSaleIndex].price = price;
+                    } else {
+                        sales.push({ barcode, quantity, price });
+                    }
+                    displaySales();
+                } else {
+                    alert('Código de barras no encontrado.');
+                }
+            } else {
+                alert('Por favor, ingresa un código de barras, cantidad y precio válidos.');
+            }
+        }
+
+        function removeSale(barcode) {
+            sales = sales.filter(sale => sale.barcode !== barcode);
+            displaySales();
+        }
+
+        function displaySales() {
+            const salesList = document.getElementById('salesList');
+            salesList.innerHTML = '';
+
+            if (sales.length > 0) {
+                let total = 0;
+                sales.forEach(sale => {
+                    const div = document.createElement('div');
+                    div.className = 'product-item';
+                    const amount = sale.quantity * sale.price;
+                    total += amount;
+                    div.innerHTML = `
+                        <span>Código: ${sale.barcode}, Cantidad: ${sale.quantity}, Total: $${amount.toFixed(2)}</span>
+                        <button class="delete-button" onclick="removeSale('${sale.barcode}')">Eliminar</button>
+                    `;
+                    salesList.appendChild(div);
+                });
+                document.getElementById('totalAmount').textContent = `Total de ventas: $${total.toFixed(2)}`;
+            } else {
+                salesList.textContent = 'No se han registrado ventas.';
+            }
+        }
+
+        function calculateChange() {
+            const paymentInput = document.getElementById('paymentInput');
+            const payment = parseFloat(paymentInput.value);
+
+            if (!isNaN(payment) && payment >= 0) {
+                const totalAmount = sales.reduce((sum, sale) => sum + (sale.quantity * sale.price), 0);
+                const change = payment - totalAmount;
+
+                if (change >= 0) {
+                    document.getElementById('changeAmount').textContent = `Cambio: $${change.toFixed(2)}`;
+                } else {
+                    document.getElementById('changeAmount').textContent = 'Monto recibido insuficiente.';
+                }
+            } else {
+                document.getElementById('changeAmount').textContent = 'Por favor, ingresa un monto recibido válido.';
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // No mostrar ninguna sección inicialmente
+        });
+    </script>
+</body>
+</html>
