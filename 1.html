@@ -1207,8 +1207,7 @@
             
             const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
             message += `\n💰 *Total: $${total.toFixed(2)}*`;
-            message += `\n\nMi nombre: \nDirección de entrega: \nTeléfono de contacto: `;
-            message += `\n\n¿Alguna observación sobre el pedido?`;
+            
             
             // Codificar el mensaje para URL
             const encodedMessage = encodeURIComponent(message);
