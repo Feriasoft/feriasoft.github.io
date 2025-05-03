@@ -1,76 +1,113 @@
 
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DigitalSoft - Soluciones Tecnológicas para Negocios</title>
+    <title>FeriaSoft - Soluciones Tecnológicas Animadas</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+   <style>
         /* Reset y estilos base */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            font-family: 'Poppins', 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
         }
         
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        
         :root {
-            --primary: #4f46e5;
-            --primary-dark: #4338ca;
-            --dark: #1e293b;
-            --light: #f8fafc;
-            --gray: #94a3b8;
-            --success: #10b981;
+            --primary: #6c5ce7;
+            --primary-dark: #5649c0;
+            --primary-light: #a29bfe;
+            --dark: #2d3436;
+            --light: #f8f9fa;
+            --gray: #636e72;
+            --success: #00b894;
+            --whatsapp: #25D366;
+            --whatsapp-dark: #128C7E;
         }
         
         body {
-            background-color: #f8fafc;
-            color: #1e293b;
+            background-color: #f8f9fa;
+            color: #2d3436;
             line-height: 1.6;
+            overflow-x: hidden;
         }
         
         .container {
             width: 100%;
             max-width: 1200px;
             margin: 0 auto;
-            padding: 0 1rem;
+            padding: 0 1.5rem;
         }
         
         section {
-            padding: 4rem 0;
+            padding: 5rem 0;
+            position: relative;
         }
         
         img {
             max-width: 100%;
             height: auto;
+            transition: all 0.5s ease;
         }
         
         /* Botones */
         .btn {
-            display: inline-block;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
             background-color: var(--primary);
             color: white;
-            padding: 0.75rem 1.5rem;
-            border-radius: 0.5rem;
+            padding: 0.8rem 1.8rem;
+            border-radius: 50px;
             text-decoration: none;
             font-weight: 600;
             text-align: center;
-            transition: all 0.3s ease;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             border: none;
             cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(108, 92, 231, 0.3);
+            min-width: 180px;
         }
         
         .btn:hover {
             background-color: var(--primary-dark);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.2);
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 8px 25px rgba(108, 92, 231, 0.4);
+        }
+        
+        .btn:active {
+            transform: translateY(1px);
+        }
+        
+        .btn::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.2), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.6s ease;
+        }
+        
+        .btn:hover::after {
+            transform: translateX(100%);
         }
         
         .btn-outline {
             background-color: transparent;
             border: 2px solid var(--primary);
             color: var(--primary);
+            box-shadow: none;
         }
         
         .btn-outline:hover {
@@ -79,265 +116,541 @@
         }
         
         .btn-whatsapp {
-            background-color: #25D366;
-            display: flex;
+            background-color: var(--whatsapp);
+            display: inline-flex;
             align-items: center;
+            justify-content: center;
             gap: 0.5rem;
+            box-shadow: 0 5px 15px rgba(37, 211, 102, 0.3);
+            text-align: center;
         }
         
         .btn-whatsapp:hover {
-            background-color: #128C7E;
+            background-color: var(--whatsapp-dark);
+            box-shadow: 0 8px 25px rgba(37, 211, 102, 0.4);
         }
         
+        /* Optimización para móviles */
+        @media (max-width: 768px) {
+            .btn, .btn-whatsapp {
+                width: 100%;
+                max-width: 300px;
+                margin: 0 auto;
+                display: flex;
+                justify-content: center;
+                padding: 0.8rem 1rem;
+            }
+            
+            .btn-whatsapp span {
+                flex-grow: 1;
+                text-align: center;
+            }
+        }
+
         /* Header */
         header {
-            background-color: white;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            background-color: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 2px 30px rgba(0, 0, 0, 0.1);
             position: fixed;
             width: 100%;
             top: 0;
             z-index: 1000;
+            backdrop-filter: blur(10px);
+            transition: all 0.4s ease;
+        }
+        
+        header.scrolled {
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+            padding: 0.5rem 0;
         }
         
         nav {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 1rem 0;
+            padding: 1.2rem 0;
+            transition: all 0.4s ease;
         }
         
         .logo {
-            font-size: 1.5rem;
+            font-size: 1.8rem;
             font-weight: 700;
             color: var(--dark);
             display: flex;
             align-items: center;
             gap: 0.5rem;
+            transition: all 0.4s ease;
         }
         
         .logo i {
             color: var(--primary);
+            font-size: 2rem;
+            transition: all 0.4s ease;
         }
         
         .menu-toggle {
             display: none;
             background: none;
             border: none;
-            font-size: 1.5rem;
+            font-size: 1.8rem;
             color: var(--dark);
             cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 1001;
+        }
+        
+        .menu-toggle:hover {
+            color: var(--primary);
         }
         
         .nav-links {
             display: flex;
             list-style: none;
-            gap: 2rem;
+            gap: 2.5rem;
         }
         
         .nav-links a {
             text-decoration: none;
             color: var(--dark);
             font-weight: 500;
-            transition: color 0.3s;
+            transition: all 0.3s ease;
+            position: relative;
+            padding: 0.5rem 0;
+        }
+        
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--primary);
+            transition: width 0.3s ease;
         }
         
         .nav-links a:hover {
             color: var(--primary);
         }
         
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+        
         /* Hero */
         .hero {
             background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
-            padding-top: 6rem;
+            padding-top: 8rem;
             text-align: center;
+            overflow: hidden;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 80%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(108, 92, 231, 0.1) 0%, rgba(108, 92, 231, 0) 70%);
+            z-index: 0;
+            animation: pulse 15s infinite alternate;
         }
         
         .hero-content {
             max-width: 800px;
             margin: 0 auto;
+            position: relative;
+            z-index: 1;
         }
         
         .hero h1 {
-            font-size: 2.5rem;
+            font-size: 3rem;
             margin-bottom: 1.5rem;
             line-height: 1.2;
+            background: linear-gradient(45deg, var(--primary), var(--primary-dark));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: fadeInUp 1s ease;
         }
         
         .hero p {
-            font-size: 1.1rem;
+            font-size: 1.2rem;
             color: var(--gray);
-            margin-bottom: 2rem;
+            margin-bottom: 2.5rem;
+            animation: fadeInUp 1s ease 0.2s forwards;
+            opacity: 0;
         }
         
         .hero-buttons {
             display: flex;
-            gap: 1rem;
+            gap: 1.5rem;
             justify-content: center;
             flex-wrap: wrap;
+            animation: fadeInUp 1s ease 0.4s forwards;
+            opacity: 0;
         }
         
         .hero-image {
-            margin-top: 3rem;
-            border-radius: 1rem;
+            margin-top: 4rem;
+            border-radius: 1.5rem;
             overflow: hidden;
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            box-shadow: 0 30px 50px -20px rgba(0, 0, 0, 0.2);
+            transform: perspective(1000px) rotateX(10deg);
+            transition: all 0.5s ease;
+            animation: float 6s ease-in-out infinite;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .hero-image:hover {
+            transform: perspective(1000px) rotateX(0deg) scale(1.03);
+            box-shadow: 0 40px 60px -25px rgba(0, 0, 0, 0.25);
         }
         
         /* Software Categories */
         .categories {
             background-color: white;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .categories::before {
+            content: '';
+            position: absolute;
+            top: -100px;
+            left: -100px;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(108, 92, 231, 0.1) 0%, rgba(108, 92, 231, 0) 70%);
+            z-index: 0;
+            animation: pulse2 20s infinite alternate;
+        }
+        
+        .categories::after {
+            content: '';
+            position: absolute;
+            bottom: -100px;
+            right: -100px;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(108, 92, 231, 0.1) 0%, rgba(108, 92, 231, 0) 70%);
+            z-index: 0;
+            animation: pulse3 25s infinite alternate;
         }
         
         .section-title {
             text-align: center;
-            margin-bottom: 3rem;
+            margin-bottom: 4rem;
+            position: relative;
+            z-index: 1;
         }
         
         .section-title h2 {
-            font-size: 2rem;
-            margin-bottom: 1rem;
+            font-size: 2.5rem;
+            margin-bottom: 1.2rem;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .section-title h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--primary-light));
+            border-radius: 2px;
         }
         
         .section-title p {
             color: var(--gray);
-            max-width: 600px;
+            max-width: 700px;
             margin: 0 auto;
+            font-size: 1.1rem;
         }
         
         .category-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 2rem;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2.5rem;
+            position: relative;
+            z-index: 1;
         }
         
         .category-card {
             background-color: white;
-            border-radius: 1rem;
+            border-radius: 1.5rem;
             overflow: hidden;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            z-index: 1;
         }
         
         .category-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
         }
         
         .category-img {
-            height: 200px;
-            background-color: #e0f2fe;
+            height: 220px;
+            background: linear-gradient(45deg, #f0f9ff, #e0f2fe);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 3rem;
+            font-size: 3.5rem;
             color: var(--primary);
+            transition: all 0.5s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .category-card:hover .category-img {
+            background: linear-gradient(45deg, #e0f2fe, #d0e8ff);
+        }
+        
+        .category-img i {
+            transition: all 0.5s ease;
+            transform: scale(1);
+        }
+        
+        .category-card:hover .category-img i {
+            transform: scale(1.1);
+            animation: bounce 1s ease;
         }
         
         .category-content {
-            padding: 1.5rem;
+            padding: 2rem;
+            position: relative;
         }
         
         .category-content h3 {
-            margin-bottom: 0.5rem;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+            color: var(--dark);
+            transition: all 0.3s ease;
+        }
+        
+        .category-card:hover .category-content h3 {
+            color: var(--primary);
         }
         
         .category-content p {
             color: var(--gray);
-            margin-bottom: 1rem;
+            margin-bottom: 1.5rem;
+            font-size: 1rem;
         }
         
         /* Features */
         .features {
             background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .features::before {
+            content: '';
+            position: absolute;
+            top: -100px;
+            right: -100px;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(108, 92, 231, 0.1) 0%, rgba(108, 92, 231, 0) 70%);
+            z-index: 0;
+            animation: pulse 18s infinite alternate;
         }
         
         .features-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
+            gap: 2.5rem;
+            position: relative;
+            z-index: 1;
         }
         
         .feature-card {
             background-color: white;
-            padding: 2rem;
-            border-radius: 1rem;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            padding: 2.5rem;
+            border-radius: 1.5rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            transition: all 0.5s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+        }
+        
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 0;
+            background: linear-gradient(to bottom, var(--primary), var(--primary-light));
+            transition: all 0.5s ease;
+        }
+        
+        .feature-card:hover::before {
+            height: 100%;
         }
         
         .feature-icon {
-            font-size: 2.5rem;
+            font-size: 3rem;
             color: var(--primary);
-            margin-bottom: 1rem;
+            margin-bottom: 1.5rem;
+            transition: all 0.5s ease;
+        }
+        
+        .feature-card:hover .feature-icon {
+            transform: rotate(10deg) scale(1.1);
         }
         
         .feature-card h3 {
-            margin-bottom: 1rem;
+            margin-bottom: 1.2rem;
+            font-size: 1.4rem;
+            transition: all 0.3s ease;
+        }
+        
+        .feature-card:hover h3 {
+            color: var(--primary);
         }
         
         .feature-card p {
             color: var(--gray);
+            transition: all 0.3s ease;
         }
         
         /* CTA */
         .cta {
             text-align: center;
-            background-color: var(--dark);
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
             color: white;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .cta::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><path fill="rgba(255,255,255,0.05)" d="M0,0 L100,0 L100,100 Q50,80 0,100"></path></svg>');
+            background-size: 100% auto;
+            background-repeat: no-repeat;
+            background-position: bottom;
+            z-index: 0;
         }
         
         .cta h2 {
-            font-size: 2rem;
-            margin-bottom: 1rem;
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+            z-index: 1;
+            animation: fadeInUp 1s ease;
         }
         
         .cta p {
-            max-width: 600px;
-            margin: 0 auto 2rem;
-            color: #cbd5e1;
+            max-width: 700px;
+            margin: 0 auto 3rem;
+            color: rgba(255,255,255,0.9);
+            font-size: 1.2rem;
+            position: relative;
+            z-index: 1;
+            animation: fadeInUp 1s ease 0.2s forwards;
+            opacity: 0;
+        }
+        
+        .cta .btn-whatsapp {
+            animation: fadeInUp 1s ease 0.4s forwards, pulseWhatsapp 2s infinite 2s;
+            opacity: 0;
+            position: relative;
+            z-index: 1;
         }
         
         /* WhatsApp Float */
         .whatsapp-float {
             position: fixed;
-            bottom: 2rem;
-            right: 2rem;
-            background-color: #25D366;
+            bottom: 2.5rem;
+            right: 2.5rem;
+            background-color: var(--whatsapp);
             color: white;
-            width: 60px;
-            height: 60px;
+            width: 70px;
+            height: 70px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 2rem;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            font-size: 2.2rem;
+            box-shadow: 0 10px 30px rgba(37, 211, 102, 0.3);
             z-index: 100;
-            transition: all 0.3s;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            animation: pulseWhatsapp 2s infinite, float 6s ease-in-out infinite;
         }
         
         .whatsapp-float:hover {
-            transform: scale(1.1);
-            background-color: #128C7E;
+            transform: scale(1.1) rotate(10deg);
+            background-color: var(--whatsapp-dark);
+            box-shadow: 0 15px 40px rgba(37, 211, 102, 0.4);
         }
         
         /* Footer */
         footer {
             background-color: var(--dark);
             color: white;
-            padding: 4rem 0 2rem;
+            padding: 5rem 0 2rem;
+            position: relative;
+        }
+        
+        footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><path fill="rgba(108, 92, 231, 0.1)" d="M0,0 L100,0 L0,100 Z"></path></svg>');
+            background-size: cover;
+            background-position: top right;
+            z-index: 0;
+            opacity: 0.3;
         }
         
         .footer-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 2rem;
-            margin-bottom: 3rem;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 3rem;
+            margin-bottom: 4rem;
+            position: relative;
+            z-index: 1;
         }
         
         .footer-col h3 {
             color: white;
-            margin-bottom: 1.5rem;
-            font-size: 1.25rem;
+            margin-bottom: 1.8rem;
+            font-size: 1.4rem;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .footer-col h3::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--primary-light));
+            border-radius: 2px;
         }
         
         .footer-links {
@@ -345,50 +658,157 @@
         }
         
         .footer-links li {
-            margin-bottom: 0.75rem;
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .footer-links li:hover {
+            transform: translateX(5px);
         }
         
         .footer-links a {
             color: #cbd5e1;
             text-decoration: none;
-            transition: color 0.3s;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
         
         .footer-links a:hover {
             color: white;
         }
         
+        .footer-links a i {
+            width: 20px;
+            text-align: center;
+        }
+        
         .social-links {
             display: flex;
-            gap: 1rem;
-            margin-top: 1.5rem;
+            gap: 1.2rem;
+            margin-top: 2rem;
         }
         
         .social-links a {
             display: flex;
             align-items: center;
             justify-content: center;
-            width: 40px;
-            height: 40px;
-            background-color: #334155;
+            width: 45px;
+            height: 45px;
+            background-color: rgba(255,255,255,0.1);
             border-radius: 50%;
             color: white;
-            transition: all 0.3s;
+            transition: all 0.3s ease;
+            font-size: 1.2rem;
         }
         
         .social-links a:hover {
             background-color: var(--primary);
-            transform: translateY(-3px);
+            transform: translateY(-5px) scale(1.1);
         }
         
         .copyright {
             text-align: center;
-            padding-top: 2rem;
-            border-top: 1px solid #334155;
+            padding-top: 3rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
             color: #94a3b8;
+            font-size: 0.9rem;
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* Animaciones */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes float {
+            0% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+            100% {
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                opacity: 0.8;
+            }
+            100% {
+                transform: scale(1.5);
+                opacity: 0;
+            }
+        }
+        
+        @keyframes pulse2 {
+            0% {
+                transform: translate(0, 0);
+            }
+            50% {
+                transform: translate(50px, 50px);
+            }
+            100% {
+                transform: translate(0, 0);
+            }
+        }
+        
+        @keyframes pulse3 {
+            0% {
+                transform: translate(0, 0);
+            }
+            50% {
+                transform: translate(-50px, -50px);
+            }
+            100% {
+                transform: translate(0, 0);
+            }
+        }
+        
+        @keyframes bounce {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.2);
+            }
+        }
+        
+        @keyframes pulseWhatsapp {
+            0% {
+                box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.4);
+            }
+            70% {
+                box-shadow: 0 0 0 15px rgba(37, 211, 102, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(37, 211, 102, 0);
+            }
         }
         
         /* Responsive */
+        @media (max-width: 992px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .section-title h2 {
+                font-size: 2.2rem;
+            }
+        }
+        
         @media (max-width: 768px) {
             .menu-toggle {
                 display: block;
@@ -396,65 +816,100 @@
             
             .nav-links {
                 position: fixed;
-                top: 70px;
+                top: 0;
                 left: -100%;
-                width: 100%;
-                height: calc(100vh - 70px);
+                width: 80%;
+                height: 100vh;
                 background-color: white;
                 flex-direction: column;
-                align-items: center;
-                padding: 2rem 0;
-                transition: left 0.3s;
-                box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+                align-items: flex-start;
+                padding: 6rem 2rem 2rem;
+                transition: all 0.5s ease;
+                box-shadow: 5px 0 30px rgba(0, 0, 0, 0.1);
             }
             
             .nav-links.active {
                 left: 0;
             }
             
+            .nav-links a {
+                font-size: 1.2rem;
+                padding: 1rem 0;
+            }
+            
+            .hero {
+                padding-top: 6rem;
+            }
+            
             .hero h1 {
-                font-size: 2rem;
+                font-size: 2.2rem;
+            }
+            
+            .hero p {
+                font-size: 1.1rem;
             }
             
             .hero-buttons {
                 flex-direction: column;
                 align-items: center;
+                gap: 1rem;
             }
             
-            .hero-buttons .btn {
-                width: 100%;
-                max-width: 300px;
+            .section-title h2 {
+                font-size: 2rem;
             }
             
-            section {
-                padding: 3rem 0;
+            .category-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .whatsapp-float {
+                width: 60px;
+                height: 60px;
+                font-size: 2rem;
+                bottom: 1.5rem;
+                right: 1.5rem;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .section-title h2 {
+                font-size: 1.8rem;
+            }
+            
+            .cta h2 {
+                font-size: 2rem;
             }
         }
     </style>
 </head>
 <body>
     <!-- WhatsApp Float -->
-    <a href="https://wa.me/5492612316632?text=Hola,%20estoy%20interesado%20en%20sus%20soluciones%20de%20software" class="whatsapp-float" target="_blank">
+    <a href="https://wa.me/5492612316632?text=Hola,%20estoy%20interesado%20en%20sus%20soluciones%20de%20software" class="whatsapp-float" target="_blank" data-aos="fade-up" data-aos-delay="1000">
         <i class="fab fa-whatsapp"></i>
     </a>
 
     <!-- Header -->
-    <header>
+    <header id="header">
         <div class="container">
             <nav>
-                <div class="logo">
-                     <i class="fas fa-cloud"></i>
+                <div class="logo" data-aos="fade-right">
+                    <i class="fa-solid fa-cube fa-bounce"></i>
                     <span>Feriasoft</span>
                 </div>
                 
-                <button class="menu-toggle" id="menuToggle">
-                    <i class="fas fa-bars"></i>
+                <button class="menu-toggle" id="menuToggle" data-aos="fade-left">
+                    <i class="fa-solid fa-bars fa-beat"></i>
                 </button>
                 
                 <ul class="nav-links" id="navLinks">
-                    <li><a href="#categories">Software</a></li>
-                    <li><a href="#features">Beneficios</a></li>
-                    <li><a href="#contact">Contacto</a></li>
+                    <li><a href="#categories" data-aos="fade-down" data-aos-delay="100">Software</a></li>
+                    <li><a href="#features" data-aos="fade-down" data-aos-delay="200">Beneficios</a></li>
+                    <li><a href="#contact" data-aos="fade-down" data-aos-delay="300">Contacto</a></li>
                 </ul>
             </nav>
         </div>
@@ -464,16 +919,16 @@
     <section class="hero">
         <div class="container">
             <div class="hero-content">
-                <h1>Soluciones de software para hacer crecer tu negocio</h1>
-                <p>Sistemas especializados en reservas, presupuestos, páginas web y más, diseñados para simplificar tus procesos</p>
-                <div class="hero-buttons">
+                <h1 data-aos="fade-up">Soluciones de software para hacer crecer tu negocio</h1>
+                <p data-aos="fade-up" data-aos-delay="200">Sistemas especializados en reservas, presupuestos, páginas web y más, diseñados para simplificar tus procesos</p>
+                <div class="hero-buttons" data-aos="fade-up" data-aos-delay="400">
                     <a href="#categories" class="btn">Ver Soluciones</a>
                     <a href="https://wa.me/5492612316632?text=Hola,%20quiero%20más%20información%20sobre%20sus%20software" class="btn btn-whatsapp" target="_blank">
                         <i class="fab fa-whatsapp"></i> Consultar
                     </a>
                 </div>
             </div>
-            <div class="hero-image">
+            <div class="hero-image" data-aos="fade-up" data-aos-delay="600">
                 <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Dashboard de software">
             </div>
         </div>
@@ -482,14 +937,13 @@
     <!-- Software Categories -->
     <section class="categories" id="categories">
         <div class="container">
-            <div class="section-title">
+            <div class="section-title" data-aos="fade-up">
                 <h2>Nuestras Soluciones de Software</h2>
                 <p>Sistemas especializados para cada necesidad de tu empresa</p>
             </div>
             
             <div class="category-grid">
-              
-                <!-- Software 4 -->
+              <!-- Software 4 -->
                 <div class="category-card">
                     <div class="category-img">
                         <i class="fas fa-cash-register"></i>
@@ -530,8 +984,9 @@
                         </a>
                     </div>
                 </div>
+              
                 <!-- Software 1 -->
-                <div class="category-card">
+                <div class="category-card" data-aos="fade-up" data-aos-delay="100">
                     <div class="category-img">
                         <i class="fas fa-calendar-check"></i>
                     </div>
@@ -545,7 +1000,7 @@
                 </div>
                 
                 <!-- Software 2 -->
-                <div class="category-card">
+                <div class="category-card" data-aos="fade-up" data-aos-delay="200">
                     <div class="category-img">
                         <i class="fas fa-file-invoice-dollar"></i>
                     </div>
@@ -559,7 +1014,7 @@
                 </div>
                 
                 <!-- Software 3 -->
-                <div class="category-card">
+                <div class="category-card" data-aos="fade-up" data-aos-delay="300">
                     <div class="category-img">
                         <i class="fas fa-globe"></i>
                     </div>
@@ -573,7 +1028,7 @@
                 </div>
                 
                 <!-- Software 4 -->
-                <div class="category-card">
+                <div class="category-card" data-aos="fade-up" data-aos-delay="100">
                     <div class="category-img">
                         <i class="fas fa-chart-line"></i>
                     </div>
@@ -587,7 +1042,7 @@
                 </div>
                 
                 <!-- Software 5 -->
-                <div class="category-card">
+                <div class="category-card" data-aos="fade-up" data-aos-delay="200">
                     <div class="category-img">
                         <i class="fas fa-truck"></i>
                     </div>
@@ -601,7 +1056,7 @@
                 </div>
                 
                 <!-- Software 6 -->
-                <div class="category-card">
+                <div class="category-card" data-aos="fade-up" data-aos-delay="300">
                     <div class="category-img">
                         <i class="fas fa-mobile-alt"></i>
                     </div>
@@ -620,13 +1075,13 @@
     <!-- Features -->
     <section class="features" id="features">
         <div class="container">
-            <div class="section-title">
+            <div class="section-title" data-aos="fade-up">
                 <h2>Ventajas de Nuestro Software</h2>
                 <p>Por qué nuestros clientes eligen nuestras soluciones</p>
             </div>
             
             <div class="features-grid">
-                <div class="feature-card">
+                <div class="feature-card" data-aos="fade-up" data-aos-delay="100">
                     <div class="feature-icon">
                         <i class="fas fa-bolt"></i>
                     </div>
@@ -634,7 +1089,7 @@
                     <p>Nuestros sistemas están listos para usarse en días, no en meses.</p>
                 </div>
                 
-                <div class="feature-card">
+                <div class="feature-card" data-aos="fade-up" data-aos-delay="200">
                     <div class="feature-icon">
                         <i class="fas fa-mobile-alt"></i>
                     </div>
@@ -642,7 +1097,7 @@
                     <p>Funciona perfecto en computadoras, tablets y celulares.</p>
                 </div>
                 
-                <div class="feature-card">
+                <div class="feature-card" data-aos="fade-up" data-aos-delay="300">
                     <div class="feature-icon">
                         <i class="fas fa-sliders-h"></i>
                     </div>
@@ -650,7 +1105,7 @@
                     <p>Adaptamos el software a tus procesos específicos.</p>
                 </div>
                 
-                <div class="feature-card">
+                <div class="feature-card" data-aos="fade-up" data-aos-delay="100">
                     <div class="feature-icon">
                         <i class="fas fa-cloud"></i>
                     </div>
@@ -658,7 +1113,7 @@
                     <p>Trabaja desde tu oficina, casa o mientras viajas.</p>
                 </div>
                 
-                <div class="feature-card">
+                <div class="feature-card" data-aos="fade-up" data-aos-delay="200">
                     <div class="feature-icon">
                         <i class="fas fa-headset"></i>
                     </div>
@@ -666,7 +1121,7 @@
                     <p>Asistencia rápida cuando la necesites.</p>
                 </div>
                 
-                <div class="feature-card">
+                <div class="feature-card" data-aos="fade-up" data-aos-delay="300">
                     <div class="feature-icon">
                         <i class="fas fa-lock"></i>
                     </div>
@@ -680,9 +1135,9 @@
     <!-- CTA -->
     <section class="cta" id="contact">
         <div class="container">
-            <h2>¿Listo para digitalizar tu negocio?</h2>
-            <p>Contáctanos hoy mismo y un asesor te ayudará a elegir la solución perfecta para tus necesidades.</p>
-            <a href="https://wa.me/5492612316632?text=Hola,%20estoy%20interesado%20en%20sus%20soluciones%20de%20software%20para%20mi%20negocio" class="btn btn-whatsapp" target="_blank">
+            <h2 data-aos="fade-up">¿Listo para digitalizar tu negocio?</h2>
+            <p data-aos="fade-up" data-aos-delay="200">Contáctanos hoy mismo y un asesor te ayudará a elegir la solución perfecta para tus necesidades.</p>
+            <a href="https://wa.me/5492612316632?text=Hola,%20estoy%20interesado%20en%20sus%20soluciones%20de%20software%20para%20mi%20negocio" class="btn btn-whatsapp" target="_blank" data-aos="fade-up" data-aos-delay="400">
                 <i class="fab fa-whatsapp"></i> Contactar por WhatsApp
             </a>
         </div>
@@ -692,8 +1147,8 @@
     <footer>
         <div class="container">
             <div class="footer-grid">
-                <div class="footer-col">
-                    <h3>DigitalSoft</h3>
+                <div class="footer-col" data-aos="fade-up" data-aos-delay="100">
+                    <h3>Feriasoft</h3>
                     <p>Soluciones tecnológicas diseñadas para hacer crecer tu negocio.</p>
                     <div class="social-links">
                         <a href="#"><i class="fab fa-facebook-f"></i></a>
@@ -702,7 +1157,7 @@
                     </div>
                 </div>
                 
-                <div class="footer-col">
+                <div class="footer-col" data-aos="fade-up" data-aos-delay="200">
                     <h3>Software</h3>
                     <ul class="footer-links">
                         <li><a href="#">Punto de Venta</a></li>
@@ -717,38 +1172,60 @@
                     </ul>
                 </div>
                 
+               
                 
-                
-                <div class="footer-col">
+                <div class="footer-col" data-aos="fade-up" data-aos-delay="400">
                     <h3>Contacto</h3>
                     <ul class="footer-links">
                         <li><a href="https://wa.me/5492612316632" target="_blank"><i class="fab fa-whatsapp"></i> +549 261 2316632</a></li>
                         <li><a href="mailto:info@digitalsoft.com"><i class="fas fa-envelope"></i> eliamamani02@gmail.com</a></li>
-                        <li><a href="#"><i class="fas fa-map-marker-alt"></i>Lavalle, Mendoza, Argentina</a></li>
+                        <li><a href="#"><i class="fas fa-map-marker-alt"></i> Lavalle, Mendoza, Argentina</a></li>
                     </ul>
                 </div>
             </div>
             
-            <div class="copyright">
+            <div class="copyright" data-aos="fade-up">
                 <p>&copy; 2025 Feriasoft. Todos los derechos reservados.</p>
             </div>
         </div>
     </footer>
 
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
+        // Inicializar AOS (Animate On Scroll)
+        AOS.init({
+            duration: 800,
+            easing: 'ease-in-out',
+            once: true,
+            offset: 100
+        });
+        
         // Menú móvil
         const menuToggle = document.getElementById('menuToggle');
         const navLinks = document.getElementById('navLinks');
         
         menuToggle.addEventListener('click', () => {
             navLinks.classList.toggle('active');
+            menuToggle.innerHTML = navLinks.classList.contains('active') ? 
+                '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
         });
         
         // Cerrar menú al hacer clic en un enlace
         document.querySelectorAll('.nav-links a').forEach(link => {
             link.addEventListener('click', () => {
                 navLinks.classList.remove('active');
+                menuToggle.innerHTML = '<i class="fas fa-bars"></i>';
             });
+        });
+        
+        // Header scroll effect
+        const header = document.getElementById('header');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
         });
         
         // Smooth scrolling para todos los enlaces
@@ -766,6 +1243,18 @@
                         behavior: 'smooth'
                     });
                 }
+            });
+        });
+        
+        // Efecto hover en tarjetas
+        const cards = document.querySelectorAll('.category-card, .feature-card');
+        cards.forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                card.style.transform = card.classList.contains('category-card') ? 
+                    'translateY(-10px) scale(1.02)' : 'translateY(-10px)';
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = '';
             });
         });
     </script>
